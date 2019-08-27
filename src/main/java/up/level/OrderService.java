@@ -11,7 +11,7 @@ public class OrderService {
         return ticketId;
     }
 
-    public void increaseOrderCount() {
+    public synchronized void increaseOrderCount() {
         orderCount++;
     }
 
