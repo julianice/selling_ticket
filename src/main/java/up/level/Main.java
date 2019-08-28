@@ -3,13 +3,15 @@ package up.level;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
         OrderService orderService = new OrderService();
-        List<Client> clientList = new ArrayList<>();
+        Collection<Client> clientList = Collections.synchronizedList(new ArrayList<>());
         List<Thread> threadList = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
@@ -22,8 +24,15 @@ public class Main {
                 Gson gson = new Gson();
                 String gsonClient = gson.toJson(client);
                 System.out.println(Thread.currentThread().getName() + " -> " + gsonClient);
-                clientList.add(client);
+
+                //maybe use CopyOnWriteArrayList?
+                synchronized (clientList) {
+                    if (!clientList.contains(client)) {
+                        clientList.add(client);
+                    }
+                }
             });
+
             thread.start();
             threadList.add(thread);
         }

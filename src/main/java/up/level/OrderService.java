@@ -3,7 +3,7 @@ package up.level;
 import java.util.Random;
 
 public class OrderService {
-    int orderCount;
+    private int orderCount;
 
     public int generateTicketId() {
         Random r = new Random();
